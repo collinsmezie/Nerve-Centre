@@ -1,4 +1,4 @@
-# Nerve Centre API
+<!-- # Nerve Centre API
 
 ![NestJS](https://img.shields.io/badge/NestJS-v9-red?logo=nestjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.x-blue?logo=typescript)
@@ -40,7 +40,7 @@ Built with **NestJS** and **PostgreSQL**, the system offers a scalable architect
 - **NestJS** – Type-safe and modular Node.js framework
 - **TypeScript** – End-to-end type safety
 - **PostgreSQL** – Relational database
-- **Prisma ORM** – Type-safe data modeling and querying
+- **Mongoose ORM** – Type-safe data modeling and querying
 - **Swagger/OpenAPI** – Auto-generated API documentation
 - **Docker** – (Planned containerization)
 - **Zod / Class-validator** – Input validation
@@ -48,4 +48,70 @@ Built with **NestJS** and **PostgreSQL**, the system offers a scalable architect
 ---
 
 ## 📁 Project Structure (Simplified)
+ -->
 
+
+
+
+# Nerve Center API
+
+![NestJS](https://img.shields.io/badge/NestJS-v9-red?logo=nestjs)
+![TypeScript](https://img.shields.io/badge/TypeScript-4.x-blue?logo=typescript)
+![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-green?logo=mongodb)
+![License](https://img.shields.io/badge/license-MIT-brightgreen)
+![Status](https://img.shields.io/badge/status-Active--Development-yellow)
+
+---
+
+## 🧠 Overview
+
+The **Nerve Center API** is a geolocation-aware backend service built with NestJS and MongoDB. It manages geofences, geofence groups, and special timed zones, enabling dynamic monitoring and control of physical or virtual areas. It's designed for use cases like logistics tracking, territory enforcement, security alerts, and smart-city operations.
+
+---
+
+## 🚀 Key Features
+
+- 📍 **Geofence Management**  
+  Create and manage custom geofences (polygon or circular) with coordinate precision.
+
+- 👥 **Geofence Grouping**  
+  Organize geofences into logical groups — for users, teams, assets, or operational units.
+
+- ⏱ **Timed Special Geofences**  
+  Define geofences that are only active during specific time windows (e.g., 08:00–17:00).
+
+- 🔄 **Dynamic Assignment APIs**  
+  Assign/unassign geofences to/from groups dynamically via REST endpoints.
+
+- 📘 **OpenAPI/Swagger Docs**  
+  Auto-generated API documentation with request/response schemas.
+
+---
+
+## 🧰 Tech Stack
+
+- **NestJS** – Modular and scalable server-side framework
+- **TypeScript** – Full type safety
+- **MongoDB** – Document database
+- **Mongoose** – ODM for MongoDB
+- **Swagger (OpenAPI)** – Auto-generated API documentation
+- **JWT** – Authentication (if applicable)
+
+---
+
+## ⚙️ Getting Started
+
+```bash
+# Clone the project
+git clone https://github.com/yourusername/nerve-centre-api.git
+cd nerve-centre-api
+
+# Install dependencies
+npm install
+
+# Configure environment variables
+cp .env.example .env
+# Set DB_URI, PORT, and any other required config
+
+# Run the development server
+npm run start:dev
