@@ -113,6 +113,6 @@ cp .env.example .env
 # Run the development server
 npm run start:dev
 
-# Visit the app
+# Visit the app at
 http://localhost:3001/api
 
