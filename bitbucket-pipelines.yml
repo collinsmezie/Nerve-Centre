@@ -1,0 +1,76 @@
+image: public.ecr.aws/lambda/nodejs:18
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Build and deploy to aws
+          deployment: staging
+          services:
+            - docker
+          script:
+            - npm install
+            - npm run package
+            - pipe: atlassian/aws-sam-deploy:1.5.0
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                S3_BUCKET: $DEPLOY_BUCKET_NAME
+                STACK_NAME: $STACK_NAME
+                SAM_TEMPLATE: 'app-sam.yml'
+                CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
+                DEBUG: 'true'
+                STACK_PARAMETERS: >
+                  [ 
+                    {
+                      "ParameterKey": "DATABASEURI",
+                      "ParameterValue": $DATABASE_URI
+                    },
+                    {
+                      "ParameterKey": "JWTSECRET",
+                      "ParameterValue": $JWT_SECRET
+                    },
+                    {
+                      "ParameterKey": "DRIVERSBUCKETNAME",
+                      "ParameterValue": $DRIVERS_BUCKET_NAME
+                    }
+                  ]
+    release/*:
+      - step:
+          name: Build and deploy to aws
+          deployment: production
+          services:
+            - docker
+          script:
+            - npm install
+            - npm run package
+            - pipe: atlassian/aws-sam-deploy:1.5.0
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                S3_BUCKET: $DEPLOY_BUCKET_NAME
+                STACK_NAME: $STACK_NAME
+                SAM_TEMPLATE: 'app-sam.yml'
+                CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
+                DEBUG: 'true'
+                STACK_PARAMETERS: >
+                  [
+                    {
+                      "ParameterKey": "DATABASEURI",
+                      "ParameterValue": $DATABASE_URI
+                    },
+                    {
+                      "ParameterKey": "STAGE",
+                      "ParameterValue": "prod"
+                    },
+                    {
+                      "ParameterKey": "JWTSECRET",
+                      "ParameterValue": $JWT_SECRET
+                    },
+                    {
+                      "ParameterKey": "DRIVERSBUCKETNAME",
+                      "ParameterValue": $DRIVERS_BUCKET_NAME
+                    }
+                  ]

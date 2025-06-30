@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  STAGE:
+    Type: String
+    Default: dev
+  DATABASEURI:
+    Type: String
+    Description: MongoDB Database URI
+  JWTSECRET:
+    Type: String
+    Description: JWT Secret
+  DRIVERSBUCKETNAME:
+    Type: String
+    Description: S3 Bucket Name for Drivers Images and License Images
+
+Globals:
+  Function:
+    Environment:
+      Variables:
+        STAGE: !Ref STAGE
+        JWT_SECRET: !Ref JWTSECRET
+        DATABASE_URI: !Ref DATABASEURI
+        DRIVERS_BUCKET_NAME: !Ref DRIVERSBUCKETNAME
+    Timeout: 30  # NestJS may need more time to bootstrap
+
+Resources:
+  DriversImagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref DRIVERSBUCKETNAME
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ['*']
+            AllowedMethods: [GET, PUT, POST, DELETE]
+            AllowedOrigins: ['*']
+            MaxAge: 3000
+
+  NerveCentreApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref STAGE
+      # Define API Gateway with proxy integration
+      BinaryMediaTypes:
+        - '*/*'
+
+  # Main Lambda function that will handle all routes
+  NerveCentreFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist
+      Handler: src/lambda.handler
+      Runtime: nodejs18.x
+      MemorySize: 256
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref DRIVERSBUCKETNAME
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref NerveCentreApi
+            Path: /{proxy+}
+            Method: ANY
