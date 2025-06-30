@@ -45,15 +45,12 @@ Built with **NestJS** and **PostgreSQL**, the system offers a scalable architect
 - **Docker** – (Planned containerization)
 - **Zod / Class-validator** – Input validation
 
----
-
-## 📁 Project Structure (Simplified)
  -->
 
 
 
 
-# Nerve Center API
+# Nerve Centre API
 
 ![NestJS](https://img.shields.io/badge/NestJS-v9-red?logo=nestjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.x-blue?logo=typescript)
